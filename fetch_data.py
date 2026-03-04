@@ -1,97 +1,145 @@
-import requests
-import json
 import os
-import sys
 import django
+import requests
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pokevault.settings')
 django.setup()
 
-from api.models import ExpansionSet, Card
+from api.models import Card, ExpansionSet
 
+
+FALLBACK_DATA = [
+    {
+        "name": "Charizard", "rarity": "Rare Holocarbon",
+        "set": {"name": "Base Set", "releaseDate": "1999-01-09", "total": 102},
+        "pricing": {"tcgplayer": {"holo": {"midPrice": 350.00}}},
+        "images": {"small": "https://images.pokemontcg.io/base1/4.png"}
+    },
+    {
+        "name": "Pikachu", "rarity": "Common",
+        "set": {"name": "Base Set", "releaseDate": "1999-01-09", "total": 102},
+        "pricing": {"tcgplayer": {"normal": {"midPrice": 5.00}}},
+        "images": {"small": "https://images.pokemontcg.io/base1/58.png"}
+    },
+    {
+        "name": "Umbreon VMAX", "rarity": "Rare Secret",
+        "set": {"name": "Evolving Skies", "releaseDate": "2021-08-27", "total": 237},
+        "pricing": {"tcgplayer": {"holo": {"midPrice": 450.00}}},
+        "images": {"small": "https://images.pokemontcg.io/swsh7/215.png"}
+    }
+]
+
+def clean_rarity(api_rarity):
+    if not api_rarity:
+        return 'Common'
+    if 'Secret' in api_rarity:
+        return 'Rare Secret'
+    if 'Ultra' in api_rarity or 'VMAX' in api_rarity or 'GX' in api_rarity:
+        return 'Rare Ultra'
+    if 'Holo' in api_rarity:
+        return 'Rare Holocarbon'
+    if 'Rare' in api_rarity:
+        return 'Rare'
+    if 'Uncommon' in api_rarity:
+        return 'Uncommon'
+    return 'Common'
 
 def fetch_pokemon_cards():
-    base_url = "https://api.pokemontcg.io/v2/cards"
-    headers = {"X-Api-Key": "YOUR_API_KEY_HERE"}
+    print(" Starting to fetch Pokémon data from TCGdex...")
     
-    sets_to_fetch = ["sv3", "sv2", "sv1", "swsh7", "swsh6", "swsh5"]
-    
-    for set_code in sets_to_fetch:
-        print(f"Fetching cards from set: {set_code}")
+    url = 'https://api.tcgdex.net/v2/en/cards'
+    headers = {'User-Agent': 'Mozilla/5.0'}
+
+    summary_list = []
+
+    try:
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status() 
+        data = response.json()
         
-        response = requests.get(
-            f"{base_url}?q=set.id:{set_code}&pageSize=100",
-            headers=headers
-        )
-        
-        if response.status_code == 200:
-            data = response.json()
-            cards_data = data.get('data', [])
+        # TCGdex returns the first 50 summaries.
+        summary_list = data[:50] 
+        print(f"Successfully connected to TCGdex API. Retrieved {len(summary_list)} card summaries.")
+    except Exception as e:
+        print(f"API Connection Failed: {e}")
+        print("Switching to the built-in Fallback Dataset... ")
+
+        summary_list = FALLBACK_DATA
+
+    print("\nWriting to database...")
+
+    for summary in summary_list:
+        try:
+            card_data = summary 
+            card_id = summary.get('id')
             
-            set_obj, _ = ExpansionSet.objects.get_or_create(
-                name=cards_data[0]['set']['name'] if cards_data else set_code,
-                defaults={'total_cards': len(cards_data)}
+
+            if card_id:
+                detail_url = f'https://api.tcgdex.net/v2/en/cards/{card_id}'
+                detail_response = requests.get(detail_url, headers=headers, timeout=5)
+                detail_response.raise_for_status()
+                card_data = detail_response.json() # This contains pricing, rarity, etc.
+
+            #Process Expansion Set 
+            set_data = card_data.get('set', {})
+            set_name = set_data.get('name', 'Unknown Set') if isinstance(set_data, dict) else 'Unknown Set'
+            release_date = set_data.get('releaseDate', '2000-01-01').replace('/', '-') if isinstance(set_data, dict) else '2000-01-01'
+            
+            if isinstance(set_data, dict) and 'cardCount' in set_data:
+                total_cards = set_data.get('cardCount', {}).get('total', 0)
+            else:
+                total_cards = set_data.get('total', 0) if isinstance(set_data, dict) else 0
+
+            expansion_set, created = ExpansionSet.objects.get_or_create(
+                name=set_name,
+                defaults={
+                    'release_date': release_date,
+                    'total_cards': total_cards
+                }
             )
-            
-            for card_data in cards_data:
-                rarity = card_data.get('rarity', 'Common')
-                if rarity not in dict(Card.RARITY_CHOICES):
-                    rarity = 'Rare'
-                
-                Card.objects.get_or_create(
-                    name=card_data['name'],
-                    set=set_obj,
-                    defaults={
-                        'rarity': rarity,
-                        'image_url': card_data.get('images', {}).get('small', ''),
-                        'average_price': float(card_data.get('cardmarket', {}).get('prices', {}).get('averageSellPrice', 0) or 0)
-                    }
-                )
-            
-            print(f"Imported {len(cards_data)} cards from {set_code}")
-        else:
-            print(f"Failed to fetch {set_code}: {response.status_code}")
 
+            #Process Prices
+            market_price = 0.0
+            pricing = card_data.get('pricing', {})
+            
+            tcgplayer = pricing.get('tcgplayer')
+            
+            # Ensure tcgplayer is a valid dictionary before checking for 'holo'
+            if tcgplayer:
+                if 'holo' in tcgplayer:
+                    market_price = tcgplayer['holo'].get('midPrice', 0.0)
+                elif 'reverse' in tcgplayer:
+                    market_price = tcgplayer['reverse'].get('midPrice', 0.0)
+                elif 'normal' in tcgplayer:
+                    market_price = tcgplayer['normal'].get('midPrice', 0.0)
+            
+            #Clean Rarity
+            valid_rarity = clean_rarity(card_data.get('rarity'))
 
-def create_sample_data():
-    if ExpansionSet.objects.exists():
-        print("Data already exists. Skipping...")
-        return
-    
-    sets_data = [
-        {"name": "Scarlet & Violet", "total_cards": 250},
-        {"name": "Sword & Shield", "total_cards": 200},
-        {"name": "Sun & Moon", "total_cards": 300},
-    ]
-    
-    for set_data in sets_data:
-        expansion_set = ExpansionSet.objects.create(**set_data)
-        
-        cards_data = [
-            {"name": "Pikachu", "rarity": "Rare", "average_price": 15.00},
-            {"name": "Charizard", "rarity": "Rare Ultra", "average_price": 150.00},
-            {"name": "Bulbasaur", "rarity": "Common", "average_price": 2.00},
-            {"name": "Squirtle", "rarity": "Common", "average_price": 2.00},
-            {"name": "Charmander", "rarity": "Common", "average_price": 2.50},
-            {"name": "Eevee", "rarity": "Rare", "average_price": 12.00},
-            {"name": "Gengar", "rarity": "Rare Holocarbon", "average_price": 80.00},
-            {"name": "Mewtwo", "rarity": "Rare Ultra", "average_price": 200.00},
-            {"name": "Rayquaza", "rarity": "Rare Secret", "average_price": 300.00},
-            {"name": "Lucario", "rarity": "Rare", "average_price": 25.00},
-        ]
-        
-        for card_data in cards_data:
-            Card.objects.create(
-                name=card_data["name"],
-                rarity=card_data["rarity"],
-                average_price=card_data["average_price"],
+            #Process Image 
+            image_base = card_data.get('image')
+            if image_base and 'assets.tcgdex.net' in image_base:
+                image_url = f"{image_base}/high.webp"
+            else:
+                image_url = card_data.get('images', {}).get('small', '')
+
+            #Write to Database 
+            Card.objects.get_or_create(
+                name=card_data.get('name', 'Unknown Name'),
                 set=expansion_set,
-                image_url=f"https://example.com/images/{card_data['name'].lower()}.png"
+                defaults={
+                    'rarity': valid_rarity,
+                    'image_url': image_url,
+                    'average_price': market_price,
+                }
             )
-    
-    print("Sample data created successfully!")
+            print(f"  [+] Imported: {card_data.get('name')} | Rarity: {valid_rarity} | Price: ${market_price}")
 
+        except Exception as e:
+            print(f"  [!] Skipped a card ({summary.get('name', 'Unknown')}): {e}")
 
-if __name__ == "__main__":
-    create_sample_data()
+    print("\n All done! Database updated successfully.")
+
+if __name__ == '__main__':
+    fetch_pokemon_cards()
