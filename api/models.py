@@ -31,22 +31,10 @@ class Card(models.Model):
 
 
 class CollectionItem(models.Model):
-    CONDITION_CHOICES = [
-        ('Mint', 'Mint'),
-        ('Near Mint', 'Near Mint'),
-        ('Excellent', 'Excellent'),
-        ('Good', 'Good'),
-        ('Fair', 'Fair'),
-        ('Poor', 'Poor'),
-    ]
-
     card = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='collection_items')
-    condition = models.CharField(max_length=50, choices=CONDITION_CHOICES)
     quantity = models.IntegerField(default=1)
-    acquired_date = models.DateField(auto_now_add=True)
-    grade = models.CharField(max_length=20, blank=True, null=True)
+    date_added = models.DateField(auto_now_add=True) 
     purchase_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    market_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         return f"{self.card.name} x{self.quantity}"
