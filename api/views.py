@@ -51,12 +51,12 @@ def collection_value(request):
         quantity = item.quantity
         
         # Calculate total cost 
-        cost_per_item = item.purchase_price if item.purchase_price else 0
+        cost_per_item = float(item.purchase_price) if item.purchase_price else 0.0
         total_cost += cost_per_item * quantity
         
         # Calculate market value by accessing the related Card model's average_price via the foreign key
         if item.card and item.card.average_price:
-            total_value += item.card.average_price * quantity
+            total_value += float(item.card.average_price) * quantity
 
     profit = total_value - total_cost
     
