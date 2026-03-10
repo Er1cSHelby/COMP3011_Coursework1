@@ -12,7 +12,7 @@ The API allows users to:
 * Filter cards by name or rarity.
 * Track collection quantity and purchase price.
 
-I chose **Django** and **Django REST Framework** for this project because they provide a robust, standard architecture for handling relational databases and object serialization, which aligns with the module's teaching on Model-View-Controller (MVC/MVT) patterns.
+I chose **Django** and **Django REST Framework** for this project because they provide a robust, standard architecture for handling relational databases and object serialization, which aligns with the module's teaching on Model-View-Controller patterns.
 
 **[Click here to view the official API Documentation (PDF)](./API_Documentation.pdf)**
 
