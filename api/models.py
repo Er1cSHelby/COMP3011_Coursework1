@@ -32,7 +32,7 @@ class Card(models.Model):
 
 class CollectionItem(models.Model):
     card = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='collection_items')
-    quantity = models.IntegerField(default=1)
+    quantity = models.IntegerField()
     date_added = models.DateField(auto_now_add=True) 
     purchase_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 

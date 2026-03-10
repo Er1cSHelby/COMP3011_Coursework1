@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>API_Documentation.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="pokevault-api-documentation">PokeVault API Documentation</h1>
+<p><strong>Student Name:</strong> Yichen Huang<br>
+<strong>Student ID:</strong> 201656189</p>
+<hr>
+<h2 id="1-introduction">1. Introduction</h2>
+<p>The PokeVault API is a RESTful Web API built with Django and Django REST Framework. It provides endpoints for managing a Pokémon Trading Card Game (TCG) collection, including viewing card data and tracking collection value.</p>
+<p><strong>Base URL:</strong> <code>http://127.0.0.1:8000/api/</code></p>
+<p><strong>Note:</strong> This API is intended for development purposes. If deploying to production, additional security measures (such as authentication/authorization) should be implemented.</p>
+<hr>
+<h2 id="2-authentication">2. Authentication</h2>
+<p>Currently, the API employs a dual-access model:</p>
+<ul>
+<li><strong>Public Endpoints:</strong> No authentication is required for local development and demonstration. Read/Write operations on the <code>/collection/</code> and public <code>/cards/</code> are openly accessible.</li>
+<li><strong>Admin Operations:</strong> Modifying the global source database (Adding new Cards or Sets globally) is protected and requires <strong>Django Session Authentication</strong>. This is managed via the built-in Django Admin interface (<code>/admin/</code>), strictly restricted to superuser accounts.</li>
+</ul>
+<hr>
+<h2 id="3-error-responses">3. Error Responses</h2>
+<h3 id="31-http-status-codes">3.1 HTTP Status Codes</h3>
+<table>
+<thead>
+<tr>
+<th>Status Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK - Request succeeded</td>
+</tr>
+<tr>
+<td>201</td>
+<td>Created - Resource successfully created</td>
+</tr>
+<tr>
+<td>204</td>
+<td>No Content - Request succeeded, no content to return</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request - Invalid request body or parameters</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found - Resource does not exist</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error - Server error</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-error-response-format">3.2 Error Response Format</h3>
+<p><strong>400 Bad Request (Validation Error):</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"field_name"</span>: [<span class="hljs-string">"Error message describing the issue"</span>]
+}
+</div></code></pre>
+<p>Examples:</p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"card"</span>: [<span class="hljs-string">"This field is required."</span>]
+}
+</div></code></pre>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"quantity"</span>: [<span class="hljs-string">"A valid integer is required."</span>]
+}
+</div></code></pre>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"quantity"</span>: [<span class="hljs-string">"Ensure this value is greater than or equal to 1."</span>]
+}
+</div></code></pre>
+<p><strong>400 Bad Request (Invalid Data):</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"quantity"</span>: [<span class="hljs-string">"-1 is not a valid value."</span>]
+}
+</div></code></pre>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"purchase_price"</span>: [<span class="hljs-string">"-10.00 is not a valid value."</span>]
+}
+</div></code></pre>
+<p><strong>404 Not Found:</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"detail"</span>: <span class="hljs-string">"Not found."</span>
+}
+</div></code></pre>
+<p><strong>400 Bad Request (Invalid Foreign Key):</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"card"</span>: [<span class="hljs-string">"Invalid pk \"999\" - object does not exist."</span>]
+}
+</div></code></pre>
+<p><strong>500 Internal Server Error:</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"detail"</span>: <span class="hljs-string">"Internal server error."</span>
+}
+</div></code></pre>
+<hr>
+<h2 id="4-data-models">4. Data Models</h2>
+<h3 id="41-expansionset">4.1 ExpansionSet</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>Integer</td>
+<td>Auto-generated</td>
+<td>Unique identifier</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>String</td>
+<td>Required, max 100 chars</td>
+<td>Name of the expansion set</td>
+</tr>
+<tr>
+<td><code>release_date</code></td>
+<td>Date</td>
+<td>Nullable</td>
+<td>Release date of the set</td>
+</tr>
+<tr>
+<td><code>total_cards</code></td>
+<td>Integer</td>
+<td>Default 0</td>
+<td>Total number of cards in the set</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-card">4.2 Card</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>Integer</td>
+<td>Auto-generated</td>
+<td>Unique identifier</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>String</td>
+<td>Required, max 100 chars</td>
+<td>Name of the card</td>
+</tr>
+<tr>
+<td><code>rarity</code></td>
+<td>String</td>
+<td>Required, must be one of: Common, Uncommon, Rare, Rare Holocarbon, Rare Ultra, Rare Secret</td>
+<td>Rarity level</td>
+</tr>
+<tr>
+<td><code>set</code></td>
+<td>ForeignKey</td>
+<td>Required, references ExpansionSet</td>
+<td>Related expansion set</td>
+</tr>
+<tr>
+<td><code>average_price</code></td>
+<td>Decimal</td>
+<td>Read-only (synced from external TCGdex API), default 0</td>
+<td>Average market price</td>
+</tr>
+<tr>
+<td><code>image_url</code></td>
+<td>String</td>
+<td>Nullable</td>
+<td>URL to card image</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-collectionitem">4.3 CollectionItem</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>Integer</td>
+<td>Auto-generated</td>
+<td>Unique identifier</td>
+</tr>
+<tr>
+<td><code>card</code></td>
+<td>ForeignKey</td>
+<td>Required, references Card</td>
+<td>Card being collected</td>
+</tr>
+<tr>
+<td><code>quantity</code></td>
+<td>Integer</td>
+<td>Required, minimum 1</td>
+<td>Number of copies owned</td>
+</tr>
+<tr>
+<td><code>purchase_price</code></td>
+<td>Decimal</td>
+<td>Optional, minimum 0, default 0</td>
+<td>Price paid per card</td>
+</tr>
+<tr>
+<td><code>date_added</code></td>
+<td>DateTime</td>
+<td>Auto-generated, read-only</td>
+<td>Timestamp when added</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="5-endpoints-summary">5. Endpoints Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/sets/</code></td>
+<td>List all expansion sets</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/sets/{id}/</code></td>
+<td>Retrieve a single expansion set</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/cards/</code></td>
+<td>List all cards (with optional filtering)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/cards/{id}/</code></td>
+<td>Retrieve a single card</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/collection/</code></td>
+<td>List all collection items</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/collection/</code></td>
+<td>Create a new collection item</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/collection/{id}/</code></td>
+<td>Retrieve a single collection item</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/collection/{id}/</code></td>
+<td>Update a collection item (full)</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td><code>/collection/{id}/</code></td>
+<td>Update a collection item (partial)</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/collection/{id}/</code></td>
+<td>Delete a collection item</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/analytics/value/</code></td>
+<td>Calculate total collection value and profit</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/health/</code></td>
+<td>Health check endpoint</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="6-endpoints-detail">6. Endpoints Detail</h2>
+<h3 id="61-health-check">6.1 Health Check</h3>
+<h4 id="get-health">GET <code>/health/</code></h4>
+<p>Check if the API is running.</p>
+<p><strong>Example Request:</strong></p>
+<pre class="hljs"><code><div>curl -X GET http://127.0.0.1:8000/api/health/
+</div></code></pre>
+<p><strong>Example Response:</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"healthy"</span>,
+    <span class="hljs-attr">"service"</span>: <span class="hljs-string">"PokeVault API"</span>
+}
+</div></code></pre>
+<hr>
+<h3 id="62-expansion-sets-read-only">6.2 Expansion Sets (Read-Only)</h3>
+<h4 id="get-sets">GET <code>/sets/</code></h4>
+<p>Retrieve a list of all expansion sets.</p>
+<p><strong>Query Parameters:</strong> None</p>
+<p><strong>Example Request:</strong></p>
+<pre class="hljs"><code><div>curl -X GET http://127.0.0.1:8000/api/sets/
+</div></code></pre>
+<p><strong>Example Response:</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"count"</span>: <span class="hljs-number">3</span>,
+    <span class="hljs-attr">"next"</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">"previous"</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">"results"</span>: [
+        {
+            <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Base Set"</span>,
+            <span class="hljs-attr">"release_date"</span>: <span class="hljs-string">"1999-01-09"</span>,
+            <span class="hljs-attr">"total_cards"</span>: <span class="hljs-number">102</span>
+        },
+        {
+            <span class="hljs-attr">"id"</span>: <span class="hljs-number">2</span>,
+            <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Jungle"</span>,
+            <span class="hljs-attr">"release_date"</span>: <span class="hljs-string">"1999-06-16"</span>,
+            <span class="hljs-attr">"total_cards"</span>: <span class="hljs-number">64</span>
+        }
+    ]
+}
+</div></code></pre>
+<hr>
+<h4 id="get-setsid">GET <code>/sets/{id}/</code></h4>
+<p>Retrieve a single expansion set by ID.</p>
+<p><strong>Path Parameters:</strong></p>
+<ul>
+<li><code>id</code> (integer): The ID of the expansion set</li>
+</ul>
+<p><strong>Example Request:</strong></p>
+<pre class="hljs"><code><div>curl -X GET http://127.0.0.1:8000/api/sets/1/
+</div></code></pre>
+<p><strong>Example Response:</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Base Set"</span>,
+    <span class="hljs-attr">"release_date"</span>: <span class="hljs-string">"1999-01-09"</span>,
+    <span class="hljs-attr">"total_cards"</span>: <span class="hljs-number">102</span>
+}
+</div></code></pre>
+<hr>
+<h3 id="63-cards-read-only">6.3 Cards (Read-Only)</h3>
+<h4 id="get-cards">GET <code>/cards/</code></h4>
+<p>Retrieve a list of all cards. Supports filtering by name and rarity.</p>
+<p><strong>Query Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Filter by card name (case-insensitive partial match)</td>
+</tr>
+<tr>
+<td><code>rarity</code></td>
+<td>string</td>
+<td>Filter by rarity (exact match)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example Request - Get all cards:</strong></p>
+<pre class="hljs"><code><div>curl -X GET http://127.0.0.1:8000/api/cards/
+</div></code></pre>
+<p><strong>Example Request - Filter by name:</strong></p>
+<pre class="hljs"><code><div>curl -X GET <span class="hljs-string">"http://127.0.0.1:8000/api/cards/?name=Charizard"</span>
+</div></code></pre>
+<p><strong>Example Request - Filter by rarity:</strong></p>
+<pre class="hljs"><code><div>curl -X GET <span class="hljs-string">"http://127.0.0.1:8000/api/cards/?rarity=Rare"</span>
+</div></code></pre>
+<p><strong>Example Response:</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"count"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"next"</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">"previous"</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">"results"</span>: [
+        {
+            <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Charizard"</span>,
+            <span class="hljs-attr">"rarity"</span>: <span class="hljs-string">"Rare"</span>,
+            <span class="hljs-attr">"set"</span>: {
+                <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+                <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Base Set"</span>,
+                <span class="hljs-attr">"release_date"</span>: <span class="hljs-string">"1999-01-09"</span>,
+                <span class="hljs-attr">"total_cards"</span>: <span class="hljs-number">102</span>
+            },
+            <span class="hljs-attr">"average_price"</span>: <span class="hljs-string">"150.00"</span>,
+            <span class="hljs-attr">"image_url"</span>: <span class="hljs-string">"https://example.com/charizard.png"</span>
+        }
+    ]
+}
+</div></code></pre>
+<hr>
+<h4 id="get-cardsid">GET <code>/cards/{id}/</code></h4>
+<p>Retrieve a single card by ID.</p>
+<p><strong>Path Parameters:</strong></p>
+<ul>
+<li><code>id</code> (integer): The ID of the card</li>
+</ul>
+<p><strong>Example Request:</strong></p>
+<pre class="hljs"><code><div>curl -X GET http://127.0.0.1:8000/api/cards/1/
+</div></code></pre>
+<p><strong>Example Response:</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Charizard"</span>,
+    <span class="hljs-attr">"rarity"</span>: <span class="hljs-string">"Rare"</span>,
+    <span class="hljs-attr">"set"</span>: {
+        <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Base Set"</span>,
+        <span class="hljs-attr">"release_date"</span>: <span class="hljs-string">"1999-01-09"</span>,
+        <span class="hljs-attr">"total_cards"</span>: <span class="hljs-number">102</span>
+    },
+    <span class="hljs-attr">"average_price"</span>: <span class="hljs-string">"150.00"</span>,
+    <span class="hljs-attr">"image_url"</span>: <span class="hljs-string">"https://example.com/charizard.png"</span>
+}
+</div></code></pre>
+<hr>
+<h3 id="64-collection">6.4 Collection</h3>
+<h4 id="get-collection">GET <code>/collection/</code></h4>
+<p>Retrieve all items in your personal collection. No filtering is currently supported.</p>
+<p><strong>Query Parameters:</strong> None</p>
+<p><strong>Example Request:</strong></p>
+<pre class="hljs"><code><div>curl -X GET http://127.0.0.1:8000/api/collection/
+</div></code></pre>
+<p><strong>Example Response:</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"count"</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attr">"next"</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">"previous"</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">"results"</span>: [
+        {
+            <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">"card"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">"card_detail"</span>: {
+                <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+                <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Charizard"</span>,
+                <span class="hljs-attr">"rarity"</span>: <span class="hljs-string">"Rare"</span>,
+                <span class="hljs-attr">"set"</span>: {
+                    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+                    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Base Set"</span>,
+                    <span class="hljs-attr">"release_date"</span>: <span class="hljs-string">"1999-01-09"</span>,
+                    <span class="hljs-attr">"total_cards"</span>: <span class="hljs-number">102</span>
+                },
+                <span class="hljs-attr">"average_price"</span>: <span class="hljs-string">"150.00"</span>,
+                <span class="hljs-attr">"image_url"</span>: <span class="hljs-string">"https://example.com/charizard.png"</span>
+            },
+            <span class="hljs-attr">"quantity"</span>: <span class="hljs-number">2</span>,
+            <span class="hljs-attr">"purchase_price"</span>: <span class="hljs-string">"120.00"</span>,
+            <span class="hljs-attr">"date_added"</span>: <span class="hljs-string">"2026-01-15T10:30:00Z"</span>
+        }
+    ]
+}
+</div></code></pre>
+<hr>
+<h4 id="post-collection">POST <code>/collection/</code></h4>
+<p>Add a new item to your collection.</p>
+<p><strong>Request Body:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>card</code></td>
+<td>integer</td>
+<td>Yes</td>
+<td>Must be a valid Card ID</td>
+<td>ID of the card to add</td>
+</tr>
+<tr>
+<td><code>quantity</code></td>
+<td>integer</td>
+<td>Yes</td>
+<td>Minimum 1</td>
+<td>Number of copies</td>
+</tr>
+<tr>
+<td><code>purchase_price</code></td>
+<td>decimal</td>
+<td>No</td>
+<td>Minimum 0, default 0</td>
+<td>Price paid per card</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example Request:</strong></p>
+<pre class="hljs"><code><div>curl -X POST http://127.0.0.1:8000/api/collection/ \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{
+    "card": 1,
+    "quantity": 2,
+    "purchase_price": 120.00
+  }'</span>
+</div></code></pre>
+<p><strong>Example Response (201 Created):</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"card"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"card_detail"</span>: {
+        <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Charizard"</span>,
+        <span class="hljs-attr">"rarity"</span>: <span class="hljs-string">"Rare"</span>,
+        <span class="hljs-attr">"set"</span>: {
+            <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Base Set"</span>,
+            <span class="hljs-attr">"release_date"</span>: <span class="hljs-string">"1999-01-09"</span>,
+            <span class="hljs-attr">"total_cards"</span>: <span class="hljs-number">102</span>
+        },
+        <span class="hljs-attr">"average_price"</span>: <span class="hljs-string">"150.00"</span>,
+        <span class="hljs-attr">"image_url"</span>: <span class="hljs-string">"https://example.com/charizard.png"</span>
+    },
+    <span class="hljs-attr">"quantity"</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attr">"purchase_price"</span>: <span class="hljs-string">"120.00"</span>,
+    <span class="hljs-attr">"date_added"</span>: <span class="hljs-string">"2026-01-15T10:30:00Z"</span>
+}
+</div></code></pre>
+<hr>
+<h4 id="get-collectionid">GET <code>/collection/{id}/</code></h4>
+<p>Retrieve a single collection item by ID.</p>
+<p><strong>Path Parameters:</strong></p>
+<ul>
+<li><code>id</code> (integer): The ID of the collection item</li>
+</ul>
+<p><strong>Example Request:</strong></p>
+<pre class="hljs"><code><div>curl -X GET http://127.0.0.1:8000/api/collection/1/
+</div></code></pre>
+<p><strong>Example Response:</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"card"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"card_detail"</span>: {
+        <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+        <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Charizard"</span>,
+        <span class="hljs-attr">"rarity"</span>: <span class="hljs-string">"Rare"</span>,
+        <span class="hljs-attr">"set"</span>: {...},
+        <span class="hljs-attr">"average_price"</span>: <span class="hljs-string">"150.00"</span>,
+        <span class="hljs-attr">"image_url"</span>: <span class="hljs-string">"https://example.com/charizard.png"</span>
+    },
+    <span class="hljs-attr">"quantity"</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attr">"purchase_price"</span>: <span class="hljs-string">"120.00"</span>,
+    <span class="hljs-attr">"date_added"</span>: <span class="hljs-string">"2026-01-15T10:30:00Z"</span>
+}
+</div></code></pre>
+<hr>
+<h4 id="put-collectionid">PUT <code>/collection/{id}/</code></h4>
+<p>Fully update a collection item (replaces all fields).</p>
+<p><strong>Path Parameters:</strong></p>
+<ul>
+<li><code>id</code> (integer): The ID of the collection item</li>
+</ul>
+<p><strong>Request Body:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Constraints</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>card</code></td>
+<td>integer</td>
+<td>Yes</td>
+<td>Must be a valid Card ID</td>
+<td>ID of the card</td>
+</tr>
+<tr>
+<td><code>quantity</code></td>
+<td>integer</td>
+<td>Yes</td>
+<td>Minimum 1</td>
+<td>Number of copies</td>
+</tr>
+<tr>
+<td><code>purchase_price</code></td>
+<td>decimal</td>
+<td>No</td>
+<td>Minimum 0, default 0</td>
+<td>Price paid per card</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example Request:</strong></p>
+<pre class="hljs"><code><div>curl -X PUT http://127.0.0.1:8000/api/collection/1/ \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{
+    "card": 1,
+    "quantity": 5,
+    "purchase_price": 100.00
+  }'</span>
+</div></code></pre>
+<p><strong>Example Response:</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"card"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"card_detail"</span>: {...},
+    <span class="hljs-attr">"quantity"</span>: <span class="hljs-number">5</span>,
+    <span class="hljs-attr">"purchase_price"</span>: <span class="hljs-string">"100.00"</span>,
+    <span class="hljs-attr">"date_added"</span>: <span class="hljs-string">"2026-01-15T10:30:00Z"</span>
+}
+</div></code></pre>
+<hr>
+<h4 id="patch-collectionid">PATCH <code>/collection/{id}/</code></h4>
+<p>Partially update a collection item.</p>
+<p><strong>Path Parameters:</strong></p>
+<ul>
+<li><code>id</code> (integer): The ID of the collection item</li>
+</ul>
+<p><strong>Request Body:</strong> At least one field required.</p>
+<p><strong>Example Request:</strong></p>
+<pre class="hljs"><code><div>curl -X PATCH http://127.0.0.1:8000/api/collection/1/ \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{
+    "quantity": 3
+  }'</span>
+</div></code></pre>
+<p><strong>Example Response:</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"card"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"card_detail"</span>: {...},
+    <span class="hljs-attr">"quantity"</span>: <span class="hljs-number">3</span>,
+    <span class="hljs-attr">"purchase_price"</span>: <span class="hljs-string">"120.00"</span>,
+    <span class="hljs-attr">"date_added"</span>: <span class="hljs-string">"2026-01-15T10:30:00Z"</span>
+}
+</div></code></pre>
+<hr>
+<h4 id="delete-collectionid">DELETE <code>/collection/{id}/</code></h4>
+<p>Delete a collection item.</p>
+<p><strong>Path Parameters:</strong></p>
+<ul>
+<li><code>id</code> (integer): The ID of the collection item</li>
+</ul>
+<p><strong>Example Request:</strong></p>
+<pre class="hljs"><code><div>curl -X DELETE http://127.0.0.1:8000/api/collection/1/
+</div></code></pre>
+<p><strong>Response:</strong> 204 No Content</p>
+<hr>
+<h3 id="65-analytics">6.5 Analytics</h3>
+<h4 id="get-analyticsvalue">GET <code>/analytics/value/</code></h4>
+<p>Calculate the total value and profit of the collection.</p>
+<p><strong>Calculation Logic:</strong></p>
+<ul>
+<li><code>total_value</code>: Sum of (card's <code>average_price</code> × <code>quantity</code>) for all collection items</li>
+<li><code>total_cost</code>: Sum of (<code>purchase_price</code> × <code>quantity</code>) for all collection items
+<ul>
+<li>If <code>purchase_price</code> is null or not provided, defaults to 0</li>
+</ul>
+</li>
+<li><code>profit</code>: <code>total_value</code> - <code>total_cost</code></li>
+</ul>
+<p><strong>Example Request:</strong></p>
+<pre class="hljs"><code><div>curl -X GET http://127.0.0.1:8000/api/analytics/value/
+</div></code></pre>
+<p><strong>Example Response:</strong></p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"total_value"</span>: <span class="hljs-number">750.00</span>,
+    <span class="hljs-attr">"total_cost"</span>: <span class="hljs-number">240.00</span>,
+    <span class="hljs-attr">"profit"</span>: <span class="hljs-number">510.00</span>
+}
+</div></code></pre>
+<p><strong>Response Fields:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>total_value</code></td>
+<td>decimal</td>
+<td>Total market value (sum of card average_price × quantity)</td>
+</tr>
+<tr>
+<td><code>total_cost</code></td>
+<td>decimal</td>
+<td>Total purchase cost (sum of purchase_price × quantity, treats null as 0)</td>
+</tr>
+<tr>
+<td><code>profit</code></td>
+<td>decimal</td>
+<td>Profit (total_value - total_cost)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="7-pagination">7. Pagination</h2>
+<p>List endpoints use pagination with the following response format:</p>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"count"</span>: <span class="hljs-number">100</span>,
+    <span class="hljs-attr">"next"</span>: <span class="hljs-string">"http://127.0.0.1:8000/api/cards/?page=2"</span>,
+    <span class="hljs-attr">"previous"</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">"results"</span>: [...]
+}
+</div></code></pre>
+<p><strong>Default:</strong> 20 items per page</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>page</code></td>
+<td>Page number (default: 1)</td>
+</tr>
+<tr>
+<td><code>page_size</code></td>
+<td>Number of items per page (default: 20)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="8-example-use-cases">8. Example Use Cases</h2>
+<h3 id="81-adding-a-card-to-collection">8.1 Adding a Card to Collection</h3>
+<ol>
+<li>First, find the card ID:</li>
+</ol>
+<pre class="hljs"><code><div>curl -X GET <span class="hljs-string">"http://127.0.0.1:8000/api/cards/?name=Charizard"</span>
+</div></code></pre>
+<ol start="2">
+<li>Add to collection:</li>
+</ol>
+<pre class="hljs"><code><div>curl -X POST http://127.0.0.1:8000/api/collection/ \
+  -H <span class="hljs-string">"Content-Type: application/json"</span> \
+  -d <span class="hljs-string">'{"card": 1, "quantity": 1, "purchase_price": 150.00}'</span>
+</div></code></pre>
+<ol start="3">
+<li>Check collection value:</li>
+</ol>
+<pre class="hljs"><code><div>curl -X GET http://127.0.0.1:8000/api/analytics/value/
+</div></code></pre>
+<hr>
+<h2 id="9-changelog">9. Changelog</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>2026-03-03</td>
+<td>Initial release - Basic API structure with Django REST Framework</td>
+</tr>
+<tr>
+<td>1.1.0</td>
+<td>2026-03-05</td>
+<td>Added pagination with 50 items default, 100 maximum per page</td>
+</tr>
+<tr>
+<td>1.2.0</td>
+<td>2026-03-07</td>
+<td>Added card filtering by name and rarity parameters</td>
+</tr>
+<tr>
+<td>1.3.0</td>
+<td>2026-03-10</td>
+<td>Added collection analytics with value and profit calculation</td>
+</tr>
+</tbody>
+</table>
+
+</body>
+</html>

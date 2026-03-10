@@ -1,38 +1,66 @@
 # PokeVault API - COMP3011 Coursework 1
 
-## Project Overview
 **Student Name:** Yichen Huang
 **Student ID:** 201656189
 
+## Project Overview
 This project is a RESTful Web API designed for the *COMP3011: Web Services and Web Data* module. It serves as a backend system for a Pokémon Trading Card Game (TCG) collection manager.
 
 The API allows users to:
 * Manage a personal collection of cards (Create, Read, Update, Delete).
 * View reference data for Pokémon cards (fetched from external sources).
-* Filter cards by set or name.
-* Track specific details like card condition (e.g., Mint, Played) and quantity.
+* Filter cards by name or rarity.
+* Track collection quantity and purchase price.
 
-I chose **Django** and **Django REST Framework (DRF)** for this project because they provide a robust, standard architecture for handling relational databases and object serialization, which aligns with the module's teaching on Model-View-Controller (MVC/MVT) patterns.
+I chose **Django** and **Django REST Framework** for this project because they provide a robust, standard architecture for handling relational databases and object serialization, which aligns with the module's teaching on Model-View-Controller (MVC/MVT) patterns.
+
+**[Click here to view the official API Documentation (PDF)](./API_Documentation.pdf)**
 
 ## Tech Stack
 * **Language:** Python 3.10+
 * **Framework:** Django 5.0, Django REST Framework 3.14
-* **Database:** SQLite (default for local development)
-* **External Integration:** `requests` library used to fetch real card data from the Pokémon TCG IO API.
+* **Database:** SQLite
+* **External Integration:** `requests` library used to fetch real card data from the TCGdex API.
 
 ## Installation & Setup Instructions
 
 Follow these steps to set up the project and run it on your local machine.
 
-### Set Up Virtual Environment 
-python -m venv .venv
-# On Windows:
-.venv\Scripts\activate
-# On macOS/Linux:
-source .venv/bin/activate
-
-### Install requirements.txt
+### 1. Install requirements.txt
 pip install -r requirements.txt
+
+### 2. Apply Database Migrations
+Before running the server, ensure the database is initialized with the correct schema:
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### 3. Fetch Initial Data
+If database is empty, run the data ingestion script to fetch real Pokémon card data from the TCGdex API:
+```bash
+python fetch_data.py
+```
+
+### 4. Run the Local Development Server
+```bash
+python manage.py runserver
+```
+The API will now be accessible locally at http://127.0.0.1:8000/
+
+/api/health/: Basic health check to verify the API is running.
+/api/sets/: Retrieve a list of all Pokémon TCG Expansion Sets.
+/api/cards/: Retrieve all Pokémon Cards.
+/api/collection/: Manage your personal card collection
+
+### Admin Dashboard
+To manage the global database
+Create a superuser account in your terminal:
+```bash
+python manage.py createsuperuser
+```
+Navigate to http://127.0.0.1:8000/admin/ and log in with your new credentials
+
 
 ## Project Structure
 
