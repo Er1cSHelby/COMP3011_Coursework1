@@ -11,8 +11,6 @@ The PokeVault API is a RESTful Web API built with Django and Django REST Framewo
 
 **Base URL:** `http://127.0.0.1:8000/api/`
 
-**Note:** This API is intended for development purposes. If deploying to production, additional security measures (such as authentication/authorization) should be implemented.
-
 ---
 
 ## 2. Authentication
