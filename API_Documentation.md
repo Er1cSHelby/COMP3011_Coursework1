@@ -125,7 +125,7 @@ Examples:
 | `card` | ForeignKey | Required, references Card | Card being collected |
 | `quantity` | Integer | Required, minimum 1 | Number of copies owned |
 | `purchase_price` | Decimal | Optional, minimum 0, default 0 | Price paid per card |
-| `date_added` | DateTime | Auto-generated, read-only | Timestamp when added |
+| `date_added` | DateField | Auto-generated, read-only | Timestamp when added |
 
 ---
 ## 5. Endpoints Summary
@@ -616,6 +616,6 @@ curl -X GET http://127.0.0.1:8000/api/analytics/value/
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0.0 | 2026-03-03 | Initial release - Basic API structure with Django REST Framework |
-| 1.1.0 | 2026-03-05 | Added pagination with 50 items default, 100 maximum per page |
+| 1.1.0 | 2026-03-05 | Added pagination with 20 items default per page |
 | 1.2.0 | 2026-03-07 | Added card filtering by name and rarity parameters |
 | 1.3.0 | 2026-03-10 | Added collection analytics with value and profit calculation |
