@@ -46,12 +46,12 @@ python fetch_data.py
 ```bash
 python manage.py runserver
 ```
-The API will now be accessible locally at http://127.0.0.1:8000/
+The API will now be accessible locally at http://127.0.0.1:8000/api/
 
-/api/health/: Basic health check to verify the API is running.
-/api/sets/: Retrieve a list of all Pokémon TCG Expansion Sets.
-/api/cards/: Retrieve all Pokémon Cards.
-/api/collection/: Manage your personal card collection
+- /api/health/: Basic health check to verify the API is running.
+- /api/sets/: Retrieve a list of all Pokémon TCG Expansion Sets.
+- /api/cards/: Retrieve all Pokémon Cards.
+- /api/collection/: Manage your personal card collection
 
 ### Admin Dashboard
 To manage the global database
