@@ -22,7 +22,7 @@ I chose **Django** and **Django REST Framework** for this project because they p
 
 ## Tech Stack
 * **Language:** Python 3.10+
-* **Framework:** Django 5.0, Django REST Framework 3.14
+* **Framework:** Django 5.1.7, Django REST Framework 3.15.2
 * **Database:** SQLite
 * **External Integration:** `requests` library used to fetch real card data from the TCGdex API.
 
