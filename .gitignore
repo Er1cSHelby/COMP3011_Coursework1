@@ -4,6 +4,7 @@
 *.pyc
 __pycache__/
 media/
+*.sqlite3
 
 # Virtual Environment
 .venv/
