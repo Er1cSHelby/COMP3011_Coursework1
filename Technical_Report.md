@@ -1,17 +1,22 @@
 # Technical Report: PokeVault API
 
-## COMP3011 Coursework 1 - Technical Report
-
 **Student Name:** Yichen Huang  
 **Student ID:** 201656189  
 **Date:** 10/03/2026
 
 ---
 
+##  Deliverables & Project Links
+* **1. Code Repository (GitHub):** https://github.com/Er1cSHelby/COMP3011_Coursework1.git
+* **2. API Documentation (PDF):** [./API_Documentation.pdf](https://github.com/Er1cSHelby/COMP3011_Coursework1/blob/main/API_Documentation.pdf)
+* **3. Presentation Slides (OneDrive):** [Microsoft OneDrive](https://leeds365-my.sharepoint.com/:p:/r/personal/sc222yh_leeds_ac_uk/Documents/Coursework%20slide%201.pptx?d=w272923d2d7b943c8841440a6aa66131a&csf=1&web=1&e=TADR0J)
+
+---
 ## 1. Introduction
 
 This report presents the design and architectural decisions underpinning the PokeVault API — a RESTful Web API developed for managing a Pokémon Trading Card Game (TCG) collection. The application enables users to maintain a personalised card collection, retrieve up-to-date card data from external sources, and evaluate both the total collection value and overall profit performance.
 Live URL: https://Er1CShelby.pythonanywhere.com/api/
+
 ---
 
 ## 2. Technology Stack Choices
@@ -36,8 +41,6 @@ SQLite was chosen for its zero-configuration setup and native Django integration
 ## 3. Architecture Design
 
 ### 3.1 Project Structure
-
-The project adheres to a standard Django project layout, organised into two principal components: the project configuration package and the main application module:
 
 ```
 ├── manage.py            # Django command-line utility
