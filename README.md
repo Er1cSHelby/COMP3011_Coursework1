@@ -3,6 +3,10 @@
 **Student Name:** Yichen Huang
 **Student ID:** 201656189
 
+Hosted on an external web server
+You can test the fully deployed production API here
+Live URL: `https://Er1CShelby.pythonanywhere.com/api/`
+
 ## Project Overview
 This project is a RESTful Web API designed for the *COMP3011: Web Services and Web Data* module. It serves as a backend system for a Pokémon Trading Card Game (TCG) collection manager.
 
@@ -47,7 +51,7 @@ python manage.py migrate
 ```
 
 ### 3. Fetch Initial Data
-If database is empty, run the data ingestion script to fetch real Pokémon card data from the TCGdex API:
+Run the data ingestion script to fetch real Pokémon card data from the TCGdex API:
 ```bash
 python fetch_data.py
 ```

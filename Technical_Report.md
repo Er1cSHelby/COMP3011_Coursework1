@@ -11,7 +11,7 @@
 ## 1. Introduction
 
 This report presents the design and architectural decisions underpinning the PokeVault API — a RESTful Web API developed for managing a Pokémon Trading Card Game (TCG) collection. The application enables users to maintain a personalised card collection, retrieve up-to-date card data from external sources, and evaluate both the total collection value and overall profit performance.
-
+Live URL: https://Er1CShelby.pythonanywhere.com/api/
 ---
 
 ## 2. Technology Stack Choices
@@ -24,12 +24,12 @@ Python was selected as the implementation language for PokeVault API, as Python'
 ### 2.2 Framework: Django + Django REST Framework (DRF)
 
 **Justification:**
-Django was adopted as the core web framework due to its robust, secure, and well-structured MVT architecture. Its built-in admin interface, ORM, and authentication system collectively reduced development overhead and allowed the project to focus on application-specific logic rather than boilerplate infrastructure. Built upon Django, the Django REST Framework (DRF) further streamlined the construction of RESTful endpoints by providing serialization, authentication, and viewset functionality out of the box. Features such as pagination, filtering, and request validation aligned closely with the project's requirements, making DRF a natural fit for PokeVault API.
+Django was chosen for its secure MVT architecture and built-in tools — admin interface, ORM, and authentication — reducing boilerplate and keeping focus on application logic. Django REST Framework extended this foundation with out-of-the-box serialization, viewsets, pagination, and filtering, making it a natural fit for building PokeVault's RESTful endpoints.
 
 ### 2.3 Database: SQLite
 
 **Justification:**
-SQLite was selected as the database solution for PokeVault API, primarily due to its zero-configuration setup, which makes it particularly well-suited for development and demonstration purposes. Its native integration with Django eliminates the need for additional driver installation or environment configuration, further streamlining the development workflow. In terms of performance, SQLite is more than adequate for the anticipated data volume of fewer than 10,000 records, ensuring responsive query execution without the overhead of a full database server. Additionally, its single-file architecture offers excellent portability, allowing the entire database to be transferred or backed up with minimal effort.
+SQLite was chosen for its zero-configuration setup and native Django integration, eliminating extra driver installation. It handles the anticipated load of under 10,000 records without the overhead of a full database server, and its single-file architecture makes the database trivially portable and easy to back up.
 
 ---
 
@@ -58,7 +58,6 @@ The project adheres to a standard Django project layout, organised into two prin
     ├── views.py         # Business logic and endpoint handling
     └── migrations/      # Database schema version control
 ```
-At the project root, manage.py serves as the Django command-line utility and fetch_data.py handles card data ingestion from the TCGdex API. The pokevault/ package centralises project-level configuration, while the api/ module encapsulates the core application logic across models, serializers, views, and URL definitions. Database schema evolution is managed through Django's migrations system, ensuring version-controlled changes throughout the development lifecycle.
 
 ### 3.2 API Design Principles
 
@@ -98,7 +97,7 @@ A standalone fetch_data.py script automatically fetches API data, creates Expans
 
 **Problem 2:** Integration with the TCGdex API introduced two significant technical obstacles: network timeouts and excessively large JSON payloads. Attempting to fetch the entire card database — encompassing thousands of records — caused severe performance bottlenecks and frequent timeout exceptions during the local database ingestion process.
 
-**Solution:**  A dual-layered approach was implemented within the fetch_data.py script to address both concerns. First, data processing was optimised by truncating API responses to a manageable sample of 50 cards (data[:50]), ensuring efficient local development without sacrificing representative data coverage. Second, a robust fallback mechanism was engineered using try-except blocks: should the external API request fail or time out, the script gracefully degrades by injecting a predefined FALLBACK_DATA dictionary, ensuring the application remains fully operational in offline or network-restricted environments.
+**Solution:**  fetch_data.py uses a dual-layered approach: API responses are capped at 50 cards for efficient local development, and a try-except fallback injects predefined FALLBACK_DATA if the request fails or times out — keeping the application operational in offline or network-restricted environments.
 
 ### 5.2 Challenge: Precision Loss in Financial Calculations
 
@@ -117,6 +116,12 @@ A standalone fetch_data.py script automatically fetches API data, creates Expans
 **Problem:** There was an architectural ambiguity regarding how to handle invalid relational data—specifically, determining the correct HTTP status code when a user attempts to add a non-existent `card_id` to their collection via a POST request. 
 
 **Solution:** Following a thorough review of RESTful design principles, the DRF serializers were configured to clearly distinguish between these two error categories. The API now returns 400 Bad Request when a foreign key constraint violation occurs within the request body — indicating a client-side validation error — while strictly reserving 404 Not Found for cases where the requested URI endpoint itself references a non-existent resource. This separation ensures that error responses carry meaningful, unambiguous semantics for consuming clients.
+
+### 5.5 Challenge: Cloud Deployment & Production Resilience
+
+**Problem:** Deploying to PythonAnywhere's free tier revealed two production-specific issues. First, the platform's outbound HTTP whitelist blocked the TCGdex API, causing fetch_data.py to fail with a 403 Proxy Error. Second, the Django REST Framework UI lost its styling due to unmapped static assets.
+
+**Solution:** To resolve these, the defensive fallback in fetch_data.py caught the proxy exception gracefully rather than crashing. The pre-populated local db.sqlite3 was manually uploaded to bypass network restrictions, providing examiners with a realistic dataset. Static assets were resolved by configuring the WSGI entry point and running collectstatic to map STATIC_ROOT, restoring the UI and ensuring the API remained fully accessible in production.
 
 ---
 

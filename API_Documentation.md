@@ -9,8 +9,11 @@
 
 The PokeVault API is a RESTful Web API built with Django and Django REST Framework. It provides endpoints for managing a Pokémon Trading Card Game (TCG) collection, including viewing card data and tracking collection value.
 
-**Base URL:** `http://127.0.0.1:8000/api/`
+**Base URL:** 
+- Live : `https://Er1CShelby.pythonanywhere.com/api/`
+- Local: `http://127.0.0.1:8000/api/`
 
+- Note: In the examples below, if you are testing the live API, please replace the local base URL (http://127.0.0.1:8000) with the deployed URL: https://Er1CShelby.pythonanywhere.com
 ---
 
 ## 2. Authentication
@@ -619,3 +622,4 @@ curl -X GET http://127.0.0.1:8000/api/analytics/value/
 | 1.1.0 | 2026-03-05 | Added pagination with 20 items default per page |
 | 1.2.0 | 2026-03-07 | Added card filtering by name and rarity parameters |
 | 1.3.0 | 2026-03-10 | Added collection analytics with value and profit calculation |
+| 1.4.0 | 2026-03-12 | Cloud Production Deployment on PythonAnywhere
