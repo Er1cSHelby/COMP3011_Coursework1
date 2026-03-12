@@ -26,8 +26,18 @@ I chose **Django** and **Django REST Framework** for this project because they p
 
 Follow these steps to set up the project and run it on your local machine.
 
+### Clone the Repository
+Open your terminal and clone the repository from GitHub:
+```bash
+git clone https://github.com/Er1cSHelby/COMP3011_Coursework1.git
+
+cd COMP3011_Coursework1
+```
+
 ### 1. Install requirements.txt
+```bash
 pip install -r requirements.txt
+```
 
 ### 2. Apply Database Migrations
 Before running the server, ensure the database is initialized with the correct schema:
